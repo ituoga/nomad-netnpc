@@ -91,6 +91,7 @@ func main() {
 					fmt.Printf("error channel: %v", err)
 				}
 			case em := <-ems:
+				log.Printf("%+v", em)
 				if em.Type == "network" && (em.Action == "connect" || em.Action == "disconnect") {
 					info, err := cli.ContainerInspect(context.Background(), em.Actor.Attributes["container"])
 					if err != nil {
