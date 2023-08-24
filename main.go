@@ -87,7 +87,9 @@ func main() {
 		for {
 			select {
 			case err := <-errs:
-				fmt.Println(err)
+				if err != nil {
+					fmt.Printf("error channel: %v", err)
+				}
 			case em := <-ems:
 				if em.Type == "network" && (em.Action == "connect" || em.Action == "disconnect") {
 					info, err := cli.ContainerInspect(context.Background(), em.Actor.Attributes["container"])
