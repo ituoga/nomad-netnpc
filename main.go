@@ -18,7 +18,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	var index uint64 = 0
+	if _, meta, err := nc.Jobs().List(nil); err == nil {
+		index = meta.LastIndex
+	}
 	alloc, _, err := nc.Allocations().Info(me, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -29,7 +32,7 @@ func main() {
 	_ = topics
 	ctx := context.Background()
 	eventsClient := nc.EventStream()
-	eventCh, err := eventsClient.Stream(ctx, topics, 0, &api.QueryOptions{})
+	eventCh, err := eventsClient.Stream(ctx, topics, index, &api.QueryOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
